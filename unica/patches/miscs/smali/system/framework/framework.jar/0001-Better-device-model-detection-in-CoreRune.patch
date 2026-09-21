@@ -3,34 +3,36 @@ From: Salvo Giangreco <giangrecosalvo9@gmail.com>
 Date: Fri, 12 Sep 2025 15:33:10 +0300
 Subject: [PATCH] Better device/model detection in CoreRune
 
-Change-Id: I8b701ae2778dba740bed168a69e963aa99caea97
-Signed-off-by: ExtremeXT <75576145+ExtremeXT@users.noreply.github.com>
+Change Id: 6085f58112160dae5045be3b68021d3fec5c3d4c
+From: Erick-04 <solonsosua@gmail.com>
+Date: Sun, 26 Jul 2026 10:43:31
+
 ---
  smali_classes6/com/samsung/android/rune/CoreRune.smali | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/smali_classes6/com/samsung/android/rune/CoreRune.smali b/smali_classes6/com/samsung/android/rune/CoreRune.smali
-index 6af0829b..e17bed3c 100644
+index bfb0c1f..0e7b162 100644
 --- a/smali_classes6/com/samsung/android/rune/CoreRune.smali
 +++ b/smali_classes6/com/samsung/android/rune/CoreRune.smali
-@@ -2622,7 +2622,7 @@
-     :goto_a
-     sput-boolean v0, Lcom/samsung/android/rune/CoreRune;->FW_WORKAROUND_RESPONSE_SPEED_LOW:Z
+@@ -2583,7 +2583,7 @@
  
--    const-string/jumbo v0, "ro.product.device"
-+    const-string/jumbo v0, "ro.product.vendor.device"
+     sput-boolean v1, Lcom/samsung/android/rune/CoreRune;->FW_WAIT_TO_HANDLE_RESIZING_FROM_CLIENT:Z
  
-     invoke-static {v0}, Landroid/os/SystemProperties;->get(Ljava/lang/String;)Ljava/lang/String;
+-    const-string/jumbo v1, "ro.product.device"
++    const-string/jumbo v1, "ro.product.vendor.device"
  
-@@ -4446,7 +4446,7 @@
+     invoke-static {v1}, Landroid/os/SystemProperties;->get(Ljava/lang/String;)Ljava/lang/String;
  
-     if-eqz v0, :cond_3b
+@@ -3824,7 +3824,7 @@
  
--    const-string/jumbo v0, "ro.product.model"
-+    const-string/jumbo v0, "ro.product.vendor.model"
+     const-string v11, "None"
  
-     invoke-static {v0}, Landroid/os/SystemProperties;->get(Ljava/lang/String;)Ljava/lang/String;
+-    const-string/jumbo v13, "ro.product.model"
++    const-string/jumbo v13, "ro.product.vendor.model"
+ 
+     invoke-static {v13, v11}, Landroid/os/SystemProperties;->get(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
  
 -- 
-2.51.0
+2.43.0
 
