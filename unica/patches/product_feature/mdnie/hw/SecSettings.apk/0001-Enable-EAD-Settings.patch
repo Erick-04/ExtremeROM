@@ -3,611 +3,94 @@ From: ExtremeXT <75576145+ExtremeXT@users.noreply.github.com>
 Date: Tue, 16 Sep 2025 21:17:51 +0300
 Subject: [PATCH] Enable EAD Settings
 
-Change-Id: Ic263c855acb67d178b1f73b7a83a2569b21b5cb6
-Signed-off-by: ExtremeXT <75576145+ExtremeXT@users.noreply.github.com>
----
- .../target/DisplayColorResetAction.smali      | 372 ++++++++++--------
- .../bixby/target/WhiteBalanceAction.smali     |  58 ++-
- .../BixbyRoutineActionHandler.smali           |   4 +-
- .../settings/display/NewModePreview$3.smali   |  72 +++-
- .../settings/display/NewModePreview$6.smali   |  53 ++-
- .../settings/display/NewModePreview.smali     |  92 +++--
- .../SecAdaptiveDisplaySettings$21.smali       |  41 +-
- .../display/SecAdaptiveDisplaySettings.smali  |  26 ++
- .../SecEADPreferenceController.smali          |   2 +-
- 9 files changed, 487 insertions(+), 233 deletions(-)
+Change Id: 50f73fab2a7fe31a1d5434c66e001d9b6dea2846
+From: Erick-04 <solonsosua@gmail.com>
+Date: Fri, 25 Sep 2026 22:15:19
 
-diff --git a/smali_classes4/com/samsung/android/settings/bixby/target/DisplayColorResetAction.smali b/smali_classes4/com/samsung/android/settings/bixby/target/DisplayColorResetAction.smali
-index c7adea3a..6b97c1de 100644
---- a/smali_classes4/com/samsung/android/settings/bixby/target/DisplayColorResetAction.smali
-+++ b/smali_classes4/com/samsung/android/settings/bixby/target/DisplayColorResetAction.smali
-@@ -5,332 +5,376 @@
+---
+ .../target/DisplayColorResetAction.smali      | 36 +++++++-
+ .../bixby/target/WhiteBalanceAction.smali     | 58 ++++++++++--
+ .../BixbyRoutineActionHandler.smali           |  4 +-
+ .../settings/display/NewModePreview$3.smali   | 72 ++++++++++++---
+ .../settings/display/NewModePreview$6.smali   | 53 ++++++++---
+ .../settings/display/NewModePreview.smali     | 92 ++++++++++++++-----
+ .../SecAdaptiveDisplaySettings$21.smali       | 41 +++++++--
+ .../display/SecAdaptiveDisplaySettings.smali  | 26 ++++++
+ .../SecEADPreferenceController.smali          |  2 +-
+ 9 files changed, 313 insertions(+), 71 deletions(-)
+
+diff --git a/smali_classes5/com/samsung/android/settings/bixby/target/DisplayColorResetAction.smali b/smali_classes5/com/samsung/android/settings/bixby/target/DisplayColorResetAction.smali
+index 5bf0adb..d6f350c 100644
+--- a/smali_classes5/com/samsung/android/settings/bixby/target/DisplayColorResetAction.smali
++++ b/smali_classes5/com/samsung/android/settings/bixby/target/DisplayColorResetAction.smali
+@@ -5,7 +5,7 @@
  
  # virtual methods
  .method public final doSetAction()Landroid/os/Bundle;
 -    .locals 15
 +    .locals 16
  
--    iget-object v0, p0, Lcom/samsung/android/settings/bixby/target/actions/Action;->mContext:Landroid/content/Context;
-+    move-object/from16 v0, p0
+     iget-object v0, p0, Lcom/samsung/android/settings/bixby/target/actions/Action;->mContext:Landroid/content/Context;
  
--    invoke-virtual {v0}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
-+    iget-object v1, v0, Lcom/samsung/android/settings/bixby/target/actions/Action;->mContext:Landroid/content/Context;
+@@ -13,6 +13,19 @@
  
--    move-result-object v0
-+    invoke-virtual {v1}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
+     move-result-object v0
  
--    sget-object v1, Lcom/samsung/android/settings/Rune;->COMMON_CONFIG_PACKAGE_NAME_SMART_MANAGER:Ljava/lang/String;
-+    move-result-object v1
- 
--    invoke-static {}, Lcom/samsung/android/feature/SemFloatingFeature;->getInstance()Lcom/samsung/android/feature/SemFloatingFeature;
-+    sget-object v2, Lcom/samsung/android/settings/Rune;->COMMON_CONFIG_PACKAGE_NAME_SMART_MANAGER:Ljava/lang/String;
- 
--    move-result-object v1
-+    const-string v2, "ead_enabled"
- 
--    const-string v2, "SEC_FLOATING_FEATURE_LCD_CONFIG_DEFAULT_SCREEN_MODE"
-+    const/4 v3, 0x0
- 
--    invoke-virtual {v1, v2}, Lcom/samsung/android/feature/SemFloatingFeature;->getInt(Ljava/lang/String;)I
-+    invoke-static {v1, v2, v3}, Landroid/provider/Settings$System;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
- 
--    move-result v1
-+    move-result v4
- 
--    const-string/jumbo v3, "screen_mode_setting"
-+    if-eqz v4, :cond_0
- 
--    invoke-static {v0, v3, v1}, Landroid/provider/Settings$System;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
-+    const/4 v4, 0x1
- 
--    move-result v3
-+    goto :goto_0
- 
--    const-string/jumbo v4, "vividness_intensity"
-+    :cond_0
-+    move v4, v3
- 
--    const-string/jumbo v5, "sec_display_temperature_green"
-+    :goto_0
-+    invoke-static {}, Lcom/samsung/android/feature/SemFloatingFeature;->getInstance()Lcom/samsung/android/feature/SemFloatingFeature;
- 
--    const-string/jumbo v6, "sec_display_temperature_blue"
-+    move-result-object v6
- 
--    const-string/jumbo v7, "sec_display_temperature_red"
-+    const-string v7, "SEC_FLOATING_FEATURE_LCD_CONFIG_DEFAULT_SCREEN_MODE"
- 
--    const/4 v8, 0x2
-+    invoke-virtual {v6, v7}, Lcom/samsung/android/feature/SemFloatingFeature;->getInt(Ljava/lang/String;)I
- 
--    const-string/jumbo v9, "sec_display_preset_index"
-+    move-result v6
- 
--    const/4 v10, 0x1
-+    const-string/jumbo v8, "screen_mode_setting"
- 
--    const/4 v11, 0x0
-+    invoke-static {v1, v8, v6}, Landroid/provider/Settings$System;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
- 
--    if-eq v1, v3, :cond_0
-+    move-result v8
- 
--    :goto_0
--    move v1, v10
-+    const-string/jumbo v9, "vividness_intensity"
- 
--    goto :goto_1
-+    const-string/jumbo v10, "sec_display_temperature_green"
- 
--    :cond_0
--    invoke-static {v0, v9, v8}, Landroid/provider/Settings$System;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
-+    const-string/jumbo v11, "sec_display_temperature_blue"
- 
--    move-result v1
-+    const-string/jumbo v12, "sec_display_temperature_red"
- 
--    if-eq v1, v8, :cond_1
-+    const/4 v13, 0x2
- 
--    goto :goto_0
-+    const-string/jumbo v14, "sec_display_preset_index"
++    const-string v1, "ead_enabled"
 +
-+    if-eq v6, v8, :cond_1
++    const/4 v2, 0x0
 +
-+    :goto_1
-+    const/4 v6, 0x1
++    invoke-static {v0, v1, v2}, Landroid/provider/Settings$System;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
 +
-+    goto :goto_2
- 
-     :cond_1
--    invoke-static {v0, v7, v11}, Landroid/provider/Settings$System;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
-+    invoke-static {v1, v14, v13}, Landroid/provider/Settings$System;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
- 
--    move-result v1
-+    move-result v6
- 
--    if-eqz v1, :cond_2
-+    if-eq v6, v13, :cond_2
- 
--    goto :goto_0
-+    goto :goto_1
- 
-     :cond_2
--    invoke-static {v0, v6, v11}, Landroid/provider/Settings$System;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
-+    invoke-static {v1, v12, v3}, Landroid/provider/Settings$System;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
- 
--    move-result v1
-+    move-result v6
- 
--    if-eqz v1, :cond_3
-+    if-eqz v6, :cond_3
- 
--    goto :goto_0
-+    goto :goto_1
- 
-     :cond_3
--    invoke-static {v0, v5, v11}, Landroid/provider/Settings$System;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
-+    invoke-static {v1, v11, v3}, Landroid/provider/Settings$System;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
- 
--    move-result v1
-+    move-result v6
- 
--    if-eqz v1, :cond_4
-+    if-eqz v6, :cond_4
- 
--    goto :goto_0
-+    goto :goto_1
- 
-     :cond_4
-+    invoke-static {v1, v10, v3}, Landroid/provider/Settings$System;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
-+
-+    move-result v6
-+
-+    if-eqz v6, :cond_5
-+
-+    goto :goto_1
-+
-+    :cond_5
-     invoke-static {}, Lcom/samsung/android/settings/Rune;->supportVividness()Z
- 
--    move-result v1
-+    move-result v6
- 
--    if-eqz v1, :cond_5
-+    if-eqz v6, :cond_6
- 
--    invoke-static {v0, v4, v11}, Landroid/provider/Settings$System;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
-+    invoke-static {v1, v9, v3}, Landroid/provider/Settings$System;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
- 
--    move-result v1
-+    move-result v6
- 
--    if-eqz v1, :cond_5
-+    if-eqz v6, :cond_6
- 
--    goto :goto_0
-+    goto :goto_1
- 
--    :cond_5
--    move v1, v11
-+    :cond_6
-+    move v6, v3
- 
--    :goto_1
--    const-string v3, "blue_light_filter"
-+    :goto_2
-+    const-string v8, "blue_light_filter"
- 
--    invoke-static {v0, v3, v11}, Landroid/provider/Settings$System;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
-+    invoke-static {v1, v8, v3}, Landroid/provider/Settings$System;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
- 
--    move-result v12
 +    move-result v15
- 
--    if-eqz v12, :cond_6
-+    if-eqz v15, :cond_7
- 
--    move v12, v10
-+    const/4 v15, 0x1
- 
--    goto :goto_2
-+    goto :goto_3
- 
--    :cond_6
--    move v12, v11
-+    :cond_7
-+    move v15, v3
- 
--    :goto_2
--    if-eqz v1, :cond_7
-+    :goto_3
-+    if-eqz v4, :cond_8
 +
-+    invoke-static {v1, v2, v3}, Landroid/provider/Settings$System;->putInt(Landroid/content/ContentResolver;Ljava/lang/String;I)Z
++    if-eqz v15, :cond_ead0
 +
-+    :cond_8
-+    if-eqz v6, :cond_9
- 
--    new-instance v13, Lcom/samsung/android/settings/display/ScreenModeSettingManager;
-+    new-instance v2, Lcom/samsung/android/settings/display/ScreenModeSettingManager;
- 
--    iget-object v14, p0, Lcom/samsung/android/settings/bixby/target/actions/Action;->mContext:Landroid/content/Context;
-+    iget-object v5, v0, Lcom/samsung/android/settings/bixby/target/actions/Action;->mContext:Landroid/content/Context;
- 
--    invoke-direct {v13, v14}, Lcom/samsung/android/settings/display/ScreenModeSettingManager;-><init>(Landroid/content/Context;)V
-+    invoke-direct {v2, v5}, Lcom/samsung/android/settings/display/ScreenModeSettingManager;-><init>(Landroid/content/Context;)V
++    invoke-static {v0, v1, v2}, Landroid/provider/Settings$System;->putInt(Landroid/content/ContentResolver;Ljava/lang/String;I)Z
++
++    :cond_ead0
+     sget-object v1, Lcom/samsung/android/settings/Rune;->COMMON_CONFIG_PACKAGE_NAME_SMART_MANAGER:Ljava/lang/String;
  
      invoke-static {}, Lcom/samsung/android/feature/SemFloatingFeature;->getInstance()Lcom/samsung/android/feature/SemFloatingFeature;
+@@ -253,13 +266,32 @@
  
--    move-result-object v14
-+    move-result-object v5
- 
--    invoke-virtual {v14, v2}, Lcom/samsung/android/feature/SemFloatingFeature;->getInt(Ljava/lang/String;)I
-+    invoke-virtual {v5, v7}, Lcom/samsung/android/feature/SemFloatingFeature;->getInt(Ljava/lang/String;)I
- 
--    move-result v2
-+    move-result v5
- 
--    invoke-virtual {v13, v2}, Lcom/samsung/android/settings/display/ScreenModeSettingManager;->setScreenMode(I)V
-+    invoke-virtual {v2, v5}, Lcom/samsung/android/settings/display/ScreenModeSettingManager;->setScreenMode(I)V
- 
--    invoke-static {v0, v9, v8}, Landroid/provider/Settings$System;->putInt(Landroid/content/ContentResolver;Ljava/lang/String;I)Z
-+    invoke-static {v1, v14, v13}, Landroid/provider/Settings$System;->putInt(Landroid/content/ContentResolver;Ljava/lang/String;I)Z
- 
--    invoke-static {v0, v7, v11}, Landroid/provider/Settings$System;->putInt(Landroid/content/ContentResolver;Ljava/lang/String;I)Z
-+    invoke-static {v1, v12, v3}, Landroid/provider/Settings$System;->putInt(Landroid/content/ContentResolver;Ljava/lang/String;I)Z
- 
--    invoke-static {v0, v6, v11}, Landroid/provider/Settings$System;->putInt(Landroid/content/ContentResolver;Ljava/lang/String;I)Z
-+    invoke-static {v1, v11, v3}, Landroid/provider/Settings$System;->putInt(Landroid/content/ContentResolver;Ljava/lang/String;I)Z
- 
--    invoke-static {v0, v5, v11}, Landroid/provider/Settings$System;->putInt(Landroid/content/ContentResolver;Ljava/lang/String;I)Z
-+    invoke-static {v1, v10, v3}, Landroid/provider/Settings$System;->putInt(Landroid/content/ContentResolver;Ljava/lang/String;I)Z
- 
-     invoke-static {}, Lcom/samsung/android/settings/Rune;->supportVividness()Z
- 
-     move-result v2
- 
--    if-eqz v2, :cond_7
-+    if-eqz v2, :cond_9
- 
--    invoke-static {v0, v4, v11}, Landroid/provider/Settings$System;->putInt(Landroid/content/ContentResolver;Ljava/lang/String;I)Z
-+    invoke-static {v1, v9, v3}, Landroid/provider/Settings$System;->putInt(Landroid/content/ContentResolver;Ljava/lang/String;I)Z
- 
--    :cond_7
--    if-eqz v12, :cond_9
-+    :cond_9
-+    if-eqz v15, :cond_b
- 
--    invoke-static {v0, v3, v11}, Landroid/provider/Settings$System;->putInt(Landroid/content/ContentResolver;Ljava/lang/String;I)Z
-+    invoke-static {v1, v8, v3}, Landroid/provider/Settings$System;->putInt(Landroid/content/ContentResolver;Ljava/lang/String;I)Z
- 
-     new-instance v2, Landroid/content/Intent;
- 
-     invoke-direct {v2}, Landroid/content/Intent;-><init>()V
- 
--    new-instance v4, Landroid/content/ComponentName;
-+    new-instance v5, Landroid/content/ComponentName;
- 
--    const-string v5, "com.samsung.android.bluelightfilter"
-+    const-string v7, "com.samsung.android.bluelightfilter"
- 
--    const-string v6, "com.samsung.android.bluelightfilter.BlueLightFilterService"
-+    const-string v9, "com.samsung.android.bluelightfilter.BlueLightFilterService"
- 
--    invoke-direct {v4, v5, v6}, Landroid/content/ComponentName;-><init>(Ljava/lang/String;Ljava/lang/String;)V
-+    invoke-direct {v5, v7, v9}, Landroid/content/ComponentName;-><init>(Ljava/lang/String;Ljava/lang/String;)V
- 
--    invoke-virtual {v2, v4}, Landroid/content/Intent;->setComponent(Landroid/content/ComponentName;)Landroid/content/Intent;
-+    invoke-virtual {v2, v5}, Landroid/content/Intent;->setComponent(Landroid/content/ComponentName;)Landroid/content/Intent;
- 
--    const-string v4, "BLUE_LIGHT_FILTER_SERVICE_TYPE"
-+    const-string v5, "BLUE_LIGHT_FILTER_SERVICE_TYPE"
- 
--    const/16 v5, 0x19
-+    const/16 v7, 0x19
- 
--    invoke-virtual {v2, v4, v5}, Landroid/content/Intent;->putExtra(Ljava/lang/String;I)Landroid/content/Intent;
-+    invoke-virtual {v2, v5, v7}, Landroid/content/Intent;->putExtra(Ljava/lang/String;I)Landroid/content/Intent;
- 
--    iget-object v4, p0, Lcom/samsung/android/settings/bixby/target/actions/Action;->mContext:Landroid/content/Context;
-+    iget-object v5, v0, Lcom/samsung/android/settings/bixby/target/actions/Action;->mContext:Landroid/content/Context;
- 
--    invoke-virtual {v4, v2}, Landroid/content/Context;->startService(Landroid/content/Intent;)Landroid/content/ComponentName;
-+    invoke-virtual {v5, v2}, Landroid/content/Context;->startService(Landroid/content/Intent;)Landroid/content/ComponentName;
- 
-     const-string v2, "blue_light_filter_opacity"
- 
--    const/4 v4, 0x5
-+    const/4 v5, 0x5
- 
--    invoke-static {v0, v2, v4}, Landroid/provider/Settings$System;->putInt(Landroid/content/ContentResolver;Ljava/lang/String;I)Z
-+    invoke-static {v1, v2, v5}, Landroid/provider/Settings$System;->putInt(Landroid/content/ContentResolver;Ljava/lang/String;I)Z
- 
-     invoke-static {}, Lcom/samsung/android/settings/Rune;->supportBlueLightFilterAdaptiveMode()Z
- 
-     move-result v2
- 
--    const-string v4, "blue_light_filter_scheduled"
-+    const-string v5, "blue_light_filter_scheduled"
- 
--    if-eqz v2, :cond_8
-+    if-eqz v2, :cond_a
- 
-     const-string v2, "blue_light_filter_adaptive_mode"
- 
--    invoke-static {v0, v2, v10}, Landroid/provider/Settings$System;->putInt(Landroid/content/ContentResolver;Ljava/lang/String;I)Z
-+    const/4 v7, 0x1
- 
--    invoke-static {v0, v4, v11}, Landroid/provider/Settings$System;->putInt(Landroid/content/ContentResolver;Ljava/lang/String;I)Z
-+    invoke-static {v1, v2, v7}, Landroid/provider/Settings$System;->putInt(Landroid/content/ContentResolver;Ljava/lang/String;I)Z
- 
--    goto :goto_3
-+    invoke-static {v1, v5, v3}, Landroid/provider/Settings$System;->putInt(Landroid/content/ContentResolver;Ljava/lang/String;I)Z
- 
--    :cond_8
--    invoke-static {v0, v4, v10}, Landroid/provider/Settings$System;->putInt(Landroid/content/ContentResolver;Ljava/lang/String;I)Z
-+    goto :goto_4
- 
--    :goto_3
-+    :cond_a
-+    const/4 v7, 0x1
-+
-+    invoke-static {v1, v5, v7}, Landroid/provider/Settings$System;->putInt(Landroid/content/ContentResolver;Ljava/lang/String;I)Z
-+
-+    :goto_4
-     const-string v2, "blue_light_filter_type"
- 
--    invoke-static {v0, v2, v11}, Landroid/provider/Settings$System;->putInt(Landroid/content/ContentResolver;Ljava/lang/String;I)Z
-+    invoke-static {v1, v2, v3}, Landroid/provider/Settings$System;->putInt(Landroid/content/ContentResolver;Ljava/lang/String;I)Z
- 
-     const-string v2, "blue_light_filter_on_time"
- 
--    const-wide/16 v4, 0x474
-+    const-wide/16 v9, 0x474
- 
--    invoke-static {v0, v2, v4, v5}, Landroid/provider/Settings$System;->putLong(Landroid/content/ContentResolver;Ljava/lang/String;J)Z
-+    invoke-static {v1, v2, v9, v10}, Landroid/provider/Settings$System;->putLong(Landroid/content/ContentResolver;Ljava/lang/String;J)Z
- 
-     const-string v2, "blue_light_filter_off_time"
- 
--    const-wide/16 v4, 0x1a4
-+    const-wide/16 v9, 0x1a4
- 
--    invoke-static {v0, v2, v4, v5}, Landroid/provider/Settings$System;->putLong(Landroid/content/ContentResolver;Ljava/lang/String;J)Z
-+    invoke-static {v1, v2, v9, v10}, Landroid/provider/Settings$System;->putLong(Landroid/content/ContentResolver;Ljava/lang/String;J)Z
- 
-     invoke-static {}, Lcom/samsung/android/feature/SemFloatingFeature;->getInstance()Lcom/samsung/android/feature/SemFloatingFeature;
- 
-     move-result-object v2
- 
--    const-string v4, "SEC_FLOATING_FEATURE_LCD_CONFIG_NIGHT_DIM"
-+    const-string v5, "SEC_FLOATING_FEATURE_LCD_CONFIG_NIGHT_DIM"
- 
--    invoke-virtual {v2, v4}, Lcom/samsung/android/feature/SemFloatingFeature;->getInt(Ljava/lang/String;)I
-+    invoke-virtual {v2, v5}, Lcom/samsung/android/feature/SemFloatingFeature;->getInt(Ljava/lang/String;)I
- 
-     move-result v2
- 
--    if-lez v2, :cond_9
-+    if-lez v2, :cond_b
- 
-     const-string v2, "blue_light_filter_night_dim"
- 
--    invoke-static {v0, v2, v11}, Landroid/provider/Settings$System;->putInt(Landroid/content/ContentResolver;Ljava/lang/String;I)Z
-+    invoke-static {v1, v2, v3}, Landroid/provider/Settings$System;->putInt(Landroid/content/ContentResolver;Ljava/lang/String;I)Z
- 
--    :cond_9
--    new-instance v0, Ljava/lang/StringBuilder;
-+    :cond_b
-+    new-instance v1, Ljava/lang/StringBuilder;
- 
--    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
-+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
- 
--    if-nez v1, :cond_a
-+    if-nez v4, :cond_c
+     if-nez v1, :cond_a
  
 -    if-eqz v12, :cond_f
-+    if-nez v6, :cond_c
- 
--    :cond_a
-+    if-eqz v15, :cond_12
++    if-nez v12, :cond_a
 +
-+    :cond_c
++    if-eqz v15, :cond_f
+ 
+     :cond_a
      new-instance v2, Ljava/lang/StringBuilder;
  
      invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
  
--    const-string v4, ","
-+    if-eqz v4, :cond_d
++    if-eqz v15, :cond_ead1
 +
-+    iget-object v3, v0, Lcom/samsung/android/settings/bixby/target/actions/Action;->mContext:Landroid/content/Context;
- 
--    const-string v5, ", "
-+    const v4, 0x7f142501
++    iget-object v4, p0, Lcom/samsung/android/settings/bixby/target/actions/Action;->mContext:Landroid/content/Context;
 +
-+    invoke-virtual {v3, v4}, Landroid/content/Context;->getString(I)Ljava/lang/String;
++    const v5, 0x7f1526c4
 +
-+    move-result-object v3
++    invoke-virtual {v4, v5}, Landroid/content/Context;->getString(I)Ljava/lang/String;
 +
-+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-+
-+    const-string/jumbo v3, "sec_ead"
-+
-+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-+
-+    :cond_d
-+    const-string v3, ","
- 
--    if-eqz v1, :cond_c
-+    const-string v4, ", "
-+
-+    if-eqz v6, :cond_f
- 
-     invoke-virtual {v2}, Ljava/lang/StringBuilder;->length()I
- 
--    move-result v1
-+    move-result v5
- 
--    if-lez v1, :cond_b
-+    if-lez v5, :cond_e
- 
--    invoke-virtual {v2, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-+    invoke-virtual {v2, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
- 
--    invoke-virtual {v0, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
- 
--    :cond_b
--    iget-object v1, p0, Lcom/samsung/android/settings/bixby/target/actions/Action;->mContext:Landroid/content/Context;
-+    :cond_e
-+    iget-object v5, v0, Lcom/samsung/android/settings/bixby/target/actions/Action;->mContext:Landroid/content/Context;
- 
-     const v6, 0x7f14289b
- 
--    invoke-virtual {v1, v6}, Landroid/content/Context;->getString(I)Ljava/lang/String;
-+    invoke-virtual {v5, v6}, Landroid/content/Context;->getString(I)Ljava/lang/String;
- 
--    move-result-object v1
-+    move-result-object v5
- 
--    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-+    invoke-virtual {v2, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
- 
--    const-string/jumbo v1, "screen_mode"
-+    const-string/jumbo v5, "screen_mode"
- 
--    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-+    invoke-virtual {v1, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
- 
--    :cond_c
--    if-eqz v12, :cond_e
-+    :cond_f
-+    if-eqz v15, :cond_11
- 
-     invoke-virtual {v2}, Ljava/lang/StringBuilder;->length()I
- 
--    move-result v1
-+    move-result v5
- 
--    if-lez v1, :cond_d
-+    if-lez v5, :cond_10
- 
--    invoke-virtual {v2, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-+    invoke-virtual {v2, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
- 
--    invoke-virtual {v0, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-+    invoke-virtual {v1, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
- 
--    :cond_d
--    iget-object v1, p0, Lcom/samsung/android/settings/bixby/target/actions/Action;->mContext:Landroid/content/Context;
-+    :cond_10
-+    iget-object v3, v0, Lcom/samsung/android/settings/bixby/target/actions/Action;->mContext:Landroid/content/Context;
- 
-     const v4, 0x7f142559
- 
--    invoke-virtual {v1, v4}, Landroid/content/Context;->getString(I)Ljava/lang/String;
-+    invoke-virtual {v3, v4}, Landroid/content/Context;->getString(I)Ljava/lang/String;
- 
--    move-result-object v1
-+    move-result-object v3
- 
--    invoke-virtual {v2, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
- 
--    invoke-virtual {v0, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-+    invoke-virtual {v1, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
- 
--    :cond_e
--    const-string/jumbo v1, "true"
-+    :cond_11
-+    const-string/jumbo v3, "true"
- 
--    invoke-virtual {p0}, Lcom/samsung/android/settings/bixby/target/actions/Action;->getValue()Ljava/lang/String;
-+    invoke-virtual {v0}, Lcom/samsung/android/settings/bixby/target/actions/Action;->getValue()Ljava/lang/String;
- 
--    move-result-object v3
 +    move-result-object v4
++
++    invoke-virtual {v2, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++
++    const-string/jumbo v4, "sec_ead"
++
++    invoke-virtual {v0, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
++
++    :cond_ead1
+     const-string v4, ","
  
--    invoke-virtual {v1, v3}, Ljava/lang/String;->equalsIgnoreCase(Ljava/lang/String;)Z
-+    invoke-virtual {v3, v4}, Ljava/lang/String;->equalsIgnoreCase(Ljava/lang/String;)Z
- 
--    move-result v1
-+    move-result v3
- 
--    if-eqz v1, :cond_f
-+    if-eqz v3, :cond_12
- 
--    iget-object v1, p0, Lcom/samsung/android/settings/bixby/target/actions/Action;->mContext:Landroid/content/Context;
-+    iget-object v3, v0, Lcom/samsung/android/settings/bixby/target/actions/Action;->mContext:Landroid/content/Context;
- 
-     invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
- 
-@@ -340,40 +384,40 @@
- 
-     move-result-object v2
- 
--    const v3, 0x7f1424c2
-+    const v4, 0x7f1424c2
- 
--    invoke-virtual {v1, v3, v2}, Landroid/content/Context;->getString(I[Ljava/lang/Object;)Ljava/lang/String;
-+    invoke-virtual {v3, v4, v2}, Landroid/content/Context;->getString(I[Ljava/lang/Object;)Ljava/lang/String;
- 
--    move-result-object v1
-+    move-result-object v2
- 
--    new-instance v2, Landroid/os/Handler;
-+    new-instance v3, Landroid/os/Handler;
- 
-     invoke-static {}, Landroid/os/Looper;->getMainLooper()Landroid/os/Looper;
- 
--    move-result-object v3
-+    move-result-object v4
- 
--    invoke-direct {v2, v3}, Landroid/os/Handler;-><init>(Landroid/os/Looper;)V
-+    invoke-direct {v3, v4}, Landroid/os/Handler;-><init>(Landroid/os/Looper;)V
- 
--    new-instance v3, Lcom/samsung/android/settings/bixby/target/DisplayColorResetAction$1;
-+    new-instance v4, Lcom/samsung/android/settings/bixby/target/DisplayColorResetAction$1;
- 
--    invoke-direct {v3, p0, v1}, Lcom/samsung/android/settings/bixby/target/DisplayColorResetAction$1;-><init>(Lcom/samsung/android/settings/bixby/target/DisplayColorResetAction;Ljava/lang/String;)V
-+    invoke-direct {v4, v0, v2}, Lcom/samsung/android/settings/bixby/target/DisplayColorResetAction$1;-><init>(Lcom/samsung/android/settings/bixby/target/DisplayColorResetAction;Ljava/lang/String;)V
- 
--    invoke-virtual {v2, v3}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
-+    invoke-virtual {v3, v4}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
- 
--    :cond_f
--    const-string/jumbo p0, "success"
-+    :cond_12
-+    const-string/jumbo v0, "success"
- 
--    invoke-static {p0}, Lcom/samsung/android/settings/bixby/target/actions/Action;->createResult(Ljava/lang/String;)Landroid/os/Bundle;
-+    invoke-static {v0}, Lcom/samsung/android/settings/bixby/target/actions/Action;->createResult(Ljava/lang/String;)Landroid/os/Bundle;
- 
--    move-result-object p0
-+    move-result-object v0
- 
--    const-string/jumbo v1, "target"
-+    const-string/jumbo v2, "target"
- 
--    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
- 
--    move-result-object v0
-+    move-result-object v1
- 
--    invoke-virtual {p0, v1, v0}, Landroid/os/Bundle;->putString(Ljava/lang/String;Ljava/lang/String;)V
-+    invoke-virtual {v0, v2, v1}, Landroid/os/Bundle;->putString(Ljava/lang/String;Ljava/lang/String;)V
- 
--    return-object p0
-+    return-object v0
- .end method
-diff --git a/smali_classes4/com/samsung/android/settings/bixby/target/WhiteBalanceAction.smali b/smali_classes4/com/samsung/android/settings/bixby/target/WhiteBalanceAction.smali
-index 11896386..8b43a689 100644
---- a/smali_classes4/com/samsung/android/settings/bixby/target/WhiteBalanceAction.smali
-+++ b/smali_classes4/com/samsung/android/settings/bixby/target/WhiteBalanceAction.smali
-@@ -225,7 +225,7 @@
+     const-string v5, ", "
+diff --git a/smali_classes5/com/samsung/android/settings/bixby/target/WhiteBalanceAction.smali b/smali_classes5/com/samsung/android/settings/bixby/target/WhiteBalanceAction.smali
+index ac49d5d..2d12669 100644
+--- a/smali_classes5/com/samsung/android/settings/bixby/target/WhiteBalanceAction.smali
++++ b/smali_classes5/com/samsung/android/settings/bixby/target/WhiteBalanceAction.smali
+@@ -217,7 +217,7 @@
  .end method
  
  .method public final doSupportAction()Landroid/os/Bundle;
@@ -616,7 +99,7 @@ index 11896386..8b43a689 100644
  
      invoke-static {}, Lcom/samsung/android/settings/Rune;->supportScreenMode()Z
  
-@@ -287,15 +287,38 @@
+@@ -279,15 +279,38 @@
  
      invoke-static {p0, v0, v1}, Landroid/provider/Settings$System;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
  
@@ -645,21 +128,21 @@ index 11896386..8b43a689 100644
 +    move-result p0
 +
 +    if-eqz p0, :cond_3
-+
+ 
 +    move v1, v2
 +
 +    :cond_3
 +    if-nez v0, :cond_5
 +
 +    if-eqz v1, :cond_4
- 
++
 +    goto :goto_1
 +
 +    :cond_4
      const-string/jumbo p0, "true"
  
      invoke-static {p0}, Lcom/samsung/android/settings/bixby/target/actions/Action;->createResult(Ljava/lang/String;)Landroid/os/Bundle;
-@@ -304,18 +327,37 @@
+@@ -296,18 +319,37 @@
  
      return-object p0
  
@@ -700,27 +183,27 @@ index 11896386..8b43a689 100644
      new-instance v0, Landroid/os/Bundle;
  
      invoke-direct {v0}, Landroid/os/Bundle;-><init>()V
-diff --git a/smali_classes4/com/samsung/android/settings/bixbyroutinehandler/BixbyRoutineActionHandler.smali b/smali_classes4/com/samsung/android/settings/bixbyroutinehandler/BixbyRoutineActionHandler.smali
-index c925c990..0f75750f 100644
---- a/smali_classes4/com/samsung/android/settings/bixbyroutinehandler/BixbyRoutineActionHandler.smali
-+++ b/smali_classes4/com/samsung/android/settings/bixbyroutinehandler/BixbyRoutineActionHandler.smali
-@@ -3240,9 +3240,9 @@
-     goto :goto_2
+diff --git a/smali_classes5/com/samsung/android/settings/bixbyroutinehandler/BixbyRoutineActionHandler.smali b/smali_classes5/com/samsung/android/settings/bixbyroutinehandler/BixbyRoutineActionHandler.smali
+index d3ad944..2cac2d0 100644
+--- a/smali_classes5/com/samsung/android/settings/bixbyroutinehandler/BixbyRoutineActionHandler.smali
++++ b/smali_classes5/com/samsung/android/settings/bixbyroutinehandler/BixbyRoutineActionHandler.smali
+@@ -4040,9 +4040,9 @@
+     goto :goto_1
  
-     :pswitch_2
+     :pswitch_3
 -    sget-object p0, Lcom/samsung/android/settings/Rune;->COMMON_CONFIG_PACKAGE_NAME_SMART_MANAGER:Ljava/lang/String;
 +    sget-object v0, Lcom/samsung/android/settings/Rune;->COMMON_CONFIG_PACKAGE_NAME_SMART_MANAGER:Ljava/lang/String;
  
 -    return-object v0
 +    goto :goto_2
  
-     :pswitch_3
+     :pswitch_4
      invoke-static {p1}, Lcom/samsung/android/settings/Rune;->supportPocketMode(Landroid/content/Context;)Z
-diff --git a/smali_classes4/com/samsung/android/settings/display/NewModePreview$3.smali b/smali_classes4/com/samsung/android/settings/display/NewModePreview$3.smali
-index 1e74d4cb..845d7fc9 100644
---- a/smali_classes4/com/samsung/android/settings/display/NewModePreview$3.smali
-+++ b/smali_classes4/com/samsung/android/settings/display/NewModePreview$3.smali
-@@ -24,7 +24,7 @@
+diff --git a/smali_classes5/com/samsung/android/settings/display/NewModePreview$3.smali b/smali_classes5/com/samsung/android/settings/display/NewModePreview$3.smali
+index 1558d06..ad00102 100644
+--- a/smali_classes5/com/samsung/android/settings/display/NewModePreview$3.smali
++++ b/smali_classes5/com/samsung/android/settings/display/NewModePreview$3.smali
+@@ -12,7 +12,7 @@
  
  # virtual methods
  .method public final onClick(Landroid/view/View;)V
@@ -729,7 +212,7 @@ index 1e74d4cb..845d7fc9 100644
  
      iget-object p1, p0, Lcom/samsung/android/settings/display/NewModePreview$3;->this$0:Lcom/samsung/android/settings/display/NewModePreview;
  
-@@ -112,28 +112,78 @@
+@@ -104,28 +104,78 @@
  
      invoke-static {v2, v3, v0}, Landroid/provider/Settings$System;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
  
@@ -756,7 +239,7 @@ index 1e74d4cb..845d7fc9 100644
 +    :goto_0
 +    sget-object v4, Lcom/samsung/android/settings/Rune;->COMMON_CONFIG_PACKAGE_NAME_SMART_MANAGER:Ljava/lang/String;
  
--    const v2, 0x7f142890
+-    const v2, 0x7f152a65
 +    invoke-virtual {p0}, Lcom/android/settings/SettingsPreferenceFragment;->getContentResolver()Landroid/content/ContentResolver;
  
 -    invoke-virtual {v0, v2}, Landroid/app/AlertDialog$Builder;->setTitle(I)Landroid/app/AlertDialog$Builder;
@@ -778,9 +261,9 @@ index 1e74d4cb..845d7fc9 100644
 +
 +    if-eqz v0, :cond_4
 +
-+    const v0, 0x7f14288f
++    const v0, 0x7f152a64
 +
-+    const v2, 0x7f14288e
++    const v2, 0x7f152a63
 +
 +    goto :goto_1
 +
@@ -789,16 +272,16 @@ index 1e74d4cb..845d7fc9 100644
 +
 +    if-eqz v0, :cond_5
 +
-+    const v0, 0x7f142892
++    const v0, 0x7f152a67
 +
-+    const v2, 0x7f142891
++    const v2, 0x7f152a66
 +
 +    goto :goto_1
 +
 +    :cond_5
-+    const v0, 0x7f142890
++    const v0, 0x7f152a65
  
-     const v2, 0x7f14288d
+     const v2, 0x7f152a62
  
 +    :goto_1
 +    new-instance v4, Landroid/app/AlertDialog$Builder;
@@ -818,11 +301,11 @@ index 1e74d4cb..845d7fc9 100644
      invoke-virtual {v0, v2}, Landroid/app/AlertDialog$Builder;->setMessage(I)Landroid/app/AlertDialog$Builder;
  
      move-result-object v0
-diff --git a/smali_classes4/com/samsung/android/settings/display/NewModePreview$6.smali b/smali_classes4/com/samsung/android/settings/display/NewModePreview$6.smali
-index de6b0cc9..2e281c3e 100644
---- a/smali_classes4/com/samsung/android/settings/display/NewModePreview$6.smali
-+++ b/smali_classes4/com/samsung/android/settings/display/NewModePreview$6.smali
-@@ -24,7 +24,7 @@
+diff --git a/smali_classes5/com/samsung/android/settings/display/NewModePreview$6.smali b/smali_classes5/com/samsung/android/settings/display/NewModePreview$6.smali
+index 6a29647..002adc8 100644
+--- a/smali_classes5/com/samsung/android/settings/display/NewModePreview$6.smali
++++ b/smali_classes5/com/samsung/android/settings/display/NewModePreview$6.smali
+@@ -12,7 +12,7 @@
  
  # virtual methods
  .method public final onClick(Landroid/content/DialogInterface;I)V
@@ -831,7 +314,7 @@ index de6b0cc9..2e281c3e 100644
  
      iget-object p2, p0, Lcom/samsung/android/settings/display/NewModePreview$6;->this$0:Lcom/samsung/android/settings/display/NewModePreview;
  
-@@ -61,45 +61,68 @@
+@@ -49,45 +49,68 @@
  
      new-instance v0, Landroid/content/ComponentName;
  
@@ -914,11 +397,11 @@ index de6b0cc9..2e281c3e 100644
      invoke-interface {p1}, Landroid/content/DialogInterface;->dismiss()V
  
      return-void
-diff --git a/smali_classes4/com/samsung/android/settings/display/NewModePreview.smali b/smali_classes4/com/samsung/android/settings/display/NewModePreview.smali
-index bafa52a9..13c4084c 100644
---- a/smali_classes4/com/samsung/android/settings/display/NewModePreview.smali
-+++ b/smali_classes4/com/samsung/android/settings/display/NewModePreview.smali
-@@ -1696,6 +1696,22 @@
+diff --git a/smali_classes5/com/samsung/android/settings/display/NewModePreview.smali b/smali_classes5/com/samsung/android/settings/display/NewModePreview.smali
+index f7c159f..6561860 100644
+--- a/smali_classes5/com/samsung/android/settings/display/NewModePreview.smali
++++ b/smali_classes5/com/samsung/android/settings/display/NewModePreview.smali
+@@ -1794,6 +1794,22 @@
  
      move-result-object v0
  
@@ -941,7 +424,7 @@ index bafa52a9..13c4084c 100644
      const-string/jumbo v1, "sec_display_preset_index"
  
      invoke-static {v1}, Landroid/provider/Settings$System;->getUriFor(Ljava/lang/String;)Landroid/net/Uri;
-@@ -1749,6 +1765,16 @@
+@@ -1847,6 +1863,16 @@
  
      move-result-object v0
  
@@ -958,7 +441,7 @@ index bafa52a9..13c4084c 100644
      iget-object p0, p0, Lcom/samsung/android/settings/display/NewModePreview;->mSeekBarObserver:Lcom/samsung/android/settings/display/NewModePreview$9;
  
      invoke-virtual {v0, p0}, Landroid/content/ContentResolver;->unregisterContentObserver(Landroid/database/ContentObserver;)V
-@@ -1772,7 +1798,7 @@
+@@ -1870,7 +1896,7 @@
  .end method
  
  .method public final setEnabledExclusiveSettings()V
@@ -967,7 +450,7 @@ index bafa52a9..13c4084c 100644
  
      invoke-virtual {p0}, Landroidx/fragment/app/Fragment;->getContext()Landroid/content/Context;
  
-@@ -1780,7 +1806,7 @@
+@@ -1878,7 +1904,7 @@
  
      if-nez v0, :cond_0
  
@@ -976,7 +459,7 @@ index bafa52a9..13c4084c 100644
  
      :cond_0
      iget-object v0, p0, Lcom/samsung/android/settings/display/NewModePreview;->mContext:Landroid/content/Context;
-@@ -1819,68 +1845,90 @@
+@@ -1917,68 +1943,90 @@
  
      sget-object v4, Lcom/samsung/android/settings/Rune;->COMMON_CONFIG_PACKAGE_NAME_SMART_MANAGER:Ljava/lang/String;
  
@@ -1087,10 +570,10 @@ index bafa52a9..13c4084c 100644
 +    :goto_4
      return-void
  .end method
-diff --git a/smali_classes4/com/samsung/android/settings/display/SecAdaptiveDisplaySettings$21.smali b/smali_classes4/com/samsung/android/settings/display/SecAdaptiveDisplaySettings$21.smali
-index 3bf5e9b7..df0e9632 100644
---- a/smali_classes4/com/samsung/android/settings/display/SecAdaptiveDisplaySettings$21.smali
-+++ b/smali_classes4/com/samsung/android/settings/display/SecAdaptiveDisplaySettings$21.smali
+diff --git a/smali_classes5/com/samsung/android/settings/display/SecAdaptiveDisplaySettings$21.smali b/smali_classes5/com/samsung/android/settings/display/SecAdaptiveDisplaySettings$21.smali
+index 0fe5ea5..7b396cf 100644
+--- a/smali_classes5/com/samsung/android/settings/display/SecAdaptiveDisplaySettings$21.smali
++++ b/smali_classes5/com/samsung/android/settings/display/SecAdaptiveDisplaySettings$21.smali
 @@ -5,7 +5,7 @@
  
  # virtual methods
@@ -1172,11 +655,11 @@ index 3bf5e9b7..df0e9632 100644
      return-object p0
  .end method
  
-diff --git a/smali_classes4/com/samsung/android/settings/display/SecAdaptiveDisplaySettings.smali b/smali_classes4/com/samsung/android/settings/display/SecAdaptiveDisplaySettings.smali
-index 6098b57a..1b391704 100644
---- a/smali_classes4/com/samsung/android/settings/display/SecAdaptiveDisplaySettings.smali
-+++ b/smali_classes4/com/samsung/android/settings/display/SecAdaptiveDisplaySettings.smali
-@@ -1846,6 +1846,16 @@
+diff --git a/smali_classes5/com/samsung/android/settings/display/SecAdaptiveDisplaySettings.smali b/smali_classes5/com/samsung/android/settings/display/SecAdaptiveDisplaySettings.smali
+index 44f9be1..5b1d8ee 100644
+--- a/smali_classes5/com/samsung/android/settings/display/SecAdaptiveDisplaySettings.smali
++++ b/smali_classes5/com/samsung/android/settings/display/SecAdaptiveDisplaySettings.smali
+@@ -1960,6 +1960,16 @@
  
      sget-object v0, Lcom/samsung/android/settings/Rune;->COMMON_CONFIG_PACKAGE_NAME_SMART_MANAGER:Ljava/lang/String;
  
@@ -1193,7 +676,7 @@ index 6098b57a..1b391704 100644
      iget-boolean v0, p0, Lcom/samsung/android/settings/display/SecAdaptiveDisplaySettings;->mIsSupportAdvancedWhiteBalance:Z
  
      if-eqz v0, :cond_1
-@@ -1945,6 +1955,22 @@
+@@ -2059,6 +2069,22 @@
  
      sget-object v0, Lcom/samsung/android/settings/Rune;->COMMON_CONFIG_PACKAGE_NAME_SMART_MANAGER:Ljava/lang/String;
  
@@ -1216,11 +699,11 @@ index 6098b57a..1b391704 100644
      iget-boolean v0, p0, Lcom/samsung/android/settings/display/SecAdaptiveDisplaySettings;->mIsSupportAdvancedWhiteBalance:Z
  
      if-eqz v0, :cond_2
-diff --git a/smali_classes4/com/samsung/android/settings/display/controller/SecEADPreferenceController.smali b/smali_classes4/com/samsung/android/settings/display/controller/SecEADPreferenceController.smali
-index 164ee2e5..1f3ad504 100644
---- a/smali_classes4/com/samsung/android/settings/display/controller/SecEADPreferenceController.smali
-+++ b/smali_classes4/com/samsung/android/settings/display/controller/SecEADPreferenceController.smali
-@@ -159,7 +159,7 @@
+diff --git a/smali_classes5/com/samsung/android/settings/display/controller/SecEADPreferenceController.smali b/smali_classes5/com/samsung/android/settings/display/controller/SecEADPreferenceController.smali
+index 997a4b4..bc97c77 100644
+--- a/smali_classes5/com/samsung/android/settings/display/controller/SecEADPreferenceController.smali
++++ b/smali_classes5/com/samsung/android/settings/display/controller/SecEADPreferenceController.smali
+@@ -167,7 +167,7 @@
  
      sget-object p0, Lcom/samsung/android/settings/Rune;->COMMON_CONFIG_PACKAGE_NAME_SMART_MANAGER:Ljava/lang/String;
  
