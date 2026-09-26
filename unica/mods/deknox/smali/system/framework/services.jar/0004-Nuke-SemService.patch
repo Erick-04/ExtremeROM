@@ -3,46 +3,48 @@ From: ExtremeXT <75576145+ExtremeXT@users.noreply.github.com>
 Date: Sat, 21 Jun 2025 20:22:38 +0200
 Subject: [PATCH] Nuke SemService
 
-Signed-off-by: ExtremeXT <75576145+ExtremeXT@users.noreply.github.com>
+Change Id: 4d98edb1ea1a75723b725c13eb0840ad6a94b5aa
+From: Erick-04 <solonsosua@gmail.com>
+Date: Sun, 19 Jul 2026 18:25:36
+
 ---
- ...temServer$$ExternalSyntheticLambda10.smali | 24 -------------------
- 1 file changed, 24 deletions(-)
+ ...temServer$$ExternalSyntheticLambda10.smali | 23 -------------------
+ 1 file changed, 23 deletions(-)
 
 diff --git a/smali/com/android/server/SystemServer$$ExternalSyntheticLambda10.smali b/smali/com/android/server/SystemServer$$ExternalSyntheticLambda10.smali
-index da140fff..6806656b 100644
+index 19efd5f..fd3b38b 100644
 --- a/smali/com/android/server/SystemServer$$ExternalSyntheticLambda10.smali
 +++ b/smali/com/android/server/SystemServer$$ExternalSyntheticLambda10.smali
-@@ -45,30 +45,6 @@
-     invoke-static {}, Lcom/android/server/utils/TimingsTraceAndSlog;->newAsyncLog()Lcom/android/server/utils/TimingsTraceAndSlog;
+@@ -26,29 +26,6 @@
  
-     move-result-object v2
+     move-result-object v1
+ 
+-    const-string/jumbo v2, "SemService"
 -
--    const-string/jumbo v3, "SemService"
--
--    invoke-virtual {v2, v3}, Lcom/android/server/utils/TimingsTraceAndSlog;->traceBegin(Ljava/lang/String;)V
+-    invoke-virtual {v1, v2}, Lcom/android/server/utils/TimingsTraceAndSlog;->traceBegin(Ljava/lang/String;)V
 -
 -    :try_start_0
--    const-class v4, Lcom/android/server/SemService;
+-    const-class v3, Lcom/android/server/SemService;
 -
--    invoke-static {v3, v4}, Landroid/os/ServiceManager;->addService(Ljava/lang/String;Ljava/lang/Class;)V
+-    invoke-static {v2, v3}, Landroid/os/ServiceManager;->addService(Ljava/lang/String;Ljava/lang/Class;)V
 -    :try_end_0
 -    .catchall {:try_start_0 .. :try_end_0} :catchall_0
 -
 -    goto :goto_0
 -
 -    :catchall_0
--    move-exception v3
+-    move-exception v2
 -
--    const-string v4, "Failure starting SemService"
+-    const-string v3, "Failure starting SemService"
 -
--    invoke-static {v4, v3}, Lcom/android/server/SystemServer;->reportWtf(Ljava/lang/String;Ljava/lang/Throwable;)V
+-    invoke-static {v3, v2}, Lcom/android/server/SystemServer;->reportWtf(Ljava/lang/String;Ljava/lang/Throwable;)V
 -
 -    :goto_0
--    invoke-virtual {v2}, Landroid/util/TimingsTraceLog;->traceEnd()V
+-    invoke-virtual {v1}, Landroid/util/TimingsTraceLog;->traceEnd()V
 -
-     const-string/jumbo v3, "SemAuthnrService"
+     const-string/jumbo v2, "SemAuthnrService"
  
-     invoke-virtual {v2, v3}, Lcom/android/server/utils/TimingsTraceAndSlog;->traceBegin(Ljava/lang/String;)V
+     invoke-virtual {v1, v2}, Lcom/android/server/utils/TimingsTraceAndSlog;->traceBegin(Ljava/lang/String;)V
 -- 
 2.49.1
 
