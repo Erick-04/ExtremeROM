@@ -3,16 +3,19 @@ From: ExtremeXT <75576145+ExtremeXT@users.noreply.github.com>
 Date: Sat, 21 Jun 2025 20:39:09 +0200
 Subject: [PATCH] Nuke eSE COS version
 
-Signed-off-by: Ocin4ever <85343782+Ocin4ever@users.noreply.github.com>
+Change Id: 9972e13f747cefed7d92a2ee5486d95eb3a56ce2
+From: Erick-04 <solonsosua@gmail.com>
+Date: Sat, 18 Jul 2026 17:52:08
+
 ---
  .../SecuritySoftwareVersionPreferenceController.smali           | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/smali_classes4/com/samsung/android/settings/deviceinfo/softwareinfo/SecuritySoftwareVersionPreferenceController.smali b/smali_classes4/com/samsung/android/settings/deviceinfo/softwareinfo/SecuritySoftwareVersionPreferenceController.smali
-index 37008266..31573bcf 100644
---- a/smali_classes4/com/samsung/android/settings/deviceinfo/softwareinfo/SecuritySoftwareVersionPreferenceController.smali
-+++ b/smali_classes4/com/samsung/android/settings/deviceinfo/softwareinfo/SecuritySoftwareVersionPreferenceController.smali
-@@ -609,6 +609,8 @@
+diff --git a/smali_classes5/com/samsung/android/settings/deviceinfo/softwareinfo/SecuritySoftwareVersionPreferenceController.smali b/smali_classes5/com/samsung/android/settings/deviceinfo/softwareinfo/SecuritySoftwareVersionPreferenceController.smali
+index 044c671..bc4078e 100644
+--- a/smali_classes5/com/samsung/android/settings/deviceinfo/softwareinfo/SecuritySoftwareVersionPreferenceController.smali
++++ b/smali_classes5/com/samsung/android/settings/deviceinfo/softwareinfo/SecuritySoftwareVersionPreferenceController.smali
+@@ -595,6 +595,8 @@
  
      move-result-object v0
  
