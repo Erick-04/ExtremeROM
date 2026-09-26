@@ -3,13 +3,16 @@ From: ExtremeXT <75576145+ExtremeXT@users.noreply.github.com>
 Date: Sat, 21 Jun 2025 20:37:20 +0200
 Subject: [PATCH] Nuke Knox HDM version
 
-Signed-off-by: Ocin4ever <85343782+Ocin4ever@users.noreply.github.com>
+Change Id: 8c063cd23b2b4efdd605e2b6a329029b438bd4a5
+From: Erick-04 <solonsosua@gmail.com>
+Date: Sat, 26 Sep 2026 22:44:08
+
 ---
  .../samsung/android/knox/hdm/HdmManager.smali | 37 +------------------
  1 file changed, 2 insertions(+), 35 deletions(-)
 
 diff --git a/smali_classes4/com/samsung/android/knox/hdm/HdmManager.smali b/smali_classes4/com/samsung/android/knox/hdm/HdmManager.smali
-index 4cbbc66e..704cecba 100644
+index 1a14fc1..cb1a954 100644
 --- a/smali_classes4/com/samsung/android/knox/hdm/HdmManager.smali
 +++ b/smali_classes4/com/samsung/android/knox/hdm/HdmManager.smali
 @@ -35,7 +35,7 @@
@@ -25,7 +28,7 @@ index 4cbbc66e..704cecba 100644
  
      invoke-static {v0, v1}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
  
--    const-string/jumbo v0, "ro.vendor.hdm.hdm_supported_subsystem"
+-    const-string v0, "ro.vendor.hdm.hdm_supported_subsystem"
 -
 -    const-string v1, "none"
 -
