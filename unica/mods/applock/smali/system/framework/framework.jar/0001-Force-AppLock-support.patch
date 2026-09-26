@@ -3,22 +3,27 @@ From: xfwdrev <74693315+xfwdrev@users.noreply.github.com>
 Date: Mon, 15 Sep 2025 13:13:59 +0800
 Subject: [PATCH] Force AppLock support
 
+Change Id: 7563e510c4ea4032d40ba57af6f38800e62ca3d3
+From: Erick-04 <solonsosua@gmail.com>
+Date: Sat, 18 Jul 2026 13:31:22
+Subject: [PATCH] Force AppLock support (framework)
+
 ---
  smali_classes6/com/samsung/android/rune/CoreRune.smali | 2 ++
  1 file changed, 2 insertions(+)
 
 diff --git a/smali_classes6/com/samsung/android/rune/CoreRune.smali b/smali_classes6/com/samsung/android/rune/CoreRune.smali
-index e17bed3c..e16b0fbc 100644
+index 30050c0..fece73f 100644
 --- a/smali_classes6/com/samsung/android/rune/CoreRune.smali
 +++ b/smali_classes6/com/samsung/android/rune/CoreRune.smali
-@@ -3426,6 +3426,8 @@
+@@ -3482,6 +3482,8 @@
  
-     move-result v1
+     move-result v2
  
-+    const/4 v1, 0x1
++    const/4 v2, 0x1
 +
-     sput-boolean v1, Lcom/samsung/android/rune/CoreRune;->FW_SUPPORT_APPLOCK:Z
+     sput-boolean v2, Lcom/samsung/android/rune/CoreRune;->FW_SUPPORT_APPLOCK:Z
  
-     sput-boolean v1, Lcom/samsung/android/rune/CoreRune;->FW_APPLOCK:Z
+     sput-boolean v2, Lcom/samsung/android/rune/CoreRune;->FW_APPLOCK:Z
 -- 
 2.43.0
