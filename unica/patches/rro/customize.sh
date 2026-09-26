@@ -12,6 +12,14 @@ fi
 
 # TODO: Add a proper check if we need to remove this
 DECODE_APK "product" "overlay/SystemUI__${SYSTEM_NAME}__auto_generated_rro_product.apk"
-sed -i -e "/config_enableRoundedCorner/d" "$APKTOOL_DIR/product/overlay/SystemUI__${SYSTEM_NAME}__auto_generated_rro_product.apk/res/values/bools.xml"
-rm "$APKTOOL_DIR/product/overlay/SystemUI__${SYSTEM_NAME}__auto_generated_rro_product.apk/res/values/public.xml"
-rm "$APKTOOL_DIR/product/overlay/SystemUI__${SYSTEM_NAME}__auto_generated_rro_product.apk/res/drawable/rounded.xml"
+
+sed -i -e "/config_enableRoundedCorner/d" \
+    "$APKTOOL_DIR/product/overlay/SystemUI__${SYSTEM_NAME}__auto_generated_rro_product.apk/res/values/bools.xml"
+
+if [[ -f "$APKTOOL_DIR/product/overlay/SystemUI__${SYSTEM_NAME}__auto_generated_rro_product.apk/res/values/public.xml" ]]; then
+    rm "$APKTOOL_DIR/product/overlay/SystemUI__${SYSTEM_NAME}__auto_generated_rro_product.apk/res/values/public.xml"
+fi
+
+if [[ -f "$APKTOOL_DIR/product/overlay/SystemUI__${SYSTEM_NAME}__auto_generated_rro_product.apk/res/drawable/rounded.xml" ]]; then
+    rm "$APKTOOL_DIR/product/overlay/SystemUI__${SYSTEM_NAME}__auto_generated_rro_product.apk/res/drawable/rounded.xml"
+fi
