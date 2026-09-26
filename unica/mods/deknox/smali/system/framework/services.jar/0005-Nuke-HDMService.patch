@@ -3,32 +3,35 @@ From: ExtremeXT <75576145+ExtremeXT@users.noreply.github.com>
 Date: Sat, 21 Jun 2025 20:27:42 +0200
 Subject: [PATCH] Nuke HDMService
 
-Signed-off-by: ExtremeXT <75576145+ExtremeXT@users.noreply.github.com>
+Change Id: f861da381be763c257b5f165bd6bcd01110aa11b
+From: Erick-04 <solonsosua@gmail.com>
+Date: Thu, 30 Jul 2026 15:29:22
+
 ---
  .../EnterpriseDeviceManagerServiceImpl.smali           | 10 ----------
  1 file changed, 10 deletions(-)
 
 diff --git a/smali/com/android/server/enterprise/EnterpriseDeviceManagerServiceImpl.smali b/smali/com/android/server/enterprise/EnterpriseDeviceManagerServiceImpl.smali
-index 824aba9a..8a19b16d 100644
+index 10e78dc..9ac247f 100644
 --- a/smali/com/android/server/enterprise/EnterpriseDeviceManagerServiceImpl.smali
 +++ b/smali/com/android/server/enterprise/EnterpriseDeviceManagerServiceImpl.smali
-@@ -2156,16 +2156,6 @@
+@@ -3726,16 +3726,6 @@
  
-     invoke-static {v1, p1}, Landroid/os/ServiceManager;->addService(Ljava/lang/String;Landroid/os/IBinder;)V
+     iput-object v2, v4, Lcom/android/server/enterprise/hdm/HdmService;->vendorController:Lcom/android/server/enterprise/hdm/HdmVendorController;
  
--    new-instance p1, Lcom/android/server/enterprise/hdm/HdmService;
+-    const-string v0, "HDM - HdmService"
 -
--    iget-object v0, v0, Lcom/android/server/enterprise/EnterpriseDeviceManagerServiceImpl$Injector;->mContext:Landroid/content/Context;
+-    const-string v2, "HdmService.java instantiated"
 -
--    invoke-direct {p1, v0}, Lcom/android/server/enterprise/hdm/HdmService;-><init>(Landroid/content/Context;)V
+-    invoke-static {v0, v2}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 -
--    const-string/jumbo v0, "hdm_service"
+-    invoke-static {}, Ljava/lang/invoke/VarHandle;->storeStoreFence()V
 -
--    invoke-static {p1, v0}, Lcom/android/server/enterprise/EnterpriseDeviceManagerServiceImpl$Injector;->addLazySystemService(Lcom/android/server/enterprise/EnterpriseServiceCallback;Ljava/lang/String;)V
+-    invoke-static {v4, v3}, Lcom/android/server/enterprise/EnterpriseDeviceManagerServiceImpl$Injector;->addLazySystemService(Lcom/android/server/enterprise/EnterpriseServiceCallback;Ljava/lang/String;)V
 -
-     iget-object p1, p0, Lcom/android/server/enterprise/EnterpriseDeviceManagerServiceImpl;->mContext:Landroid/content/Context;
+     iget-object v0, v1, Lcom/android/server/enterprise/EnterpriseDeviceManagerServiceImpl;->mContext:Landroid/content/Context;
  
-     sget v0, Lcom/android/server/enterprise/appconfig/ApplicationRestrictionsService;->$r8$clinit:I
+     sget v2, Lcom/android/server/enterprise/appconfig/ApplicationRestrictionsService;->$r8$clinit:I
 -- 
 2.49.1
 
