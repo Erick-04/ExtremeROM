@@ -3,16 +3,19 @@ From: ExtremeXT <75576145+ExtremeXT@users.noreply.github.com>
 Date: Wed, 4 Jun 2025 17:27:58 +0300
 Subject: [PATCH] Enable gestures by default
 
-Signed-off-by: ExtremeXT <75576145+ExtremeXT@users.noreply.github.com>
+Change Id: 6129effb1511ad8737c33068eb7e638e53e29f7c Mon Sep 17 00:00:00 2001
+From: Erick-04 <solonsosua@gmail.com>
+Date: Sun, 27 Sep 2026 19:45:58
+
 ---
  .../providers/settings/SecUpgradeController.smali      | 10 +++++++++-
  1 file changed, 9 insertions(+), 1 deletion(-)
 
 diff --git a/smali/com/android/providers/settings/SecUpgradeController.smali b/smali/com/android/providers/settings/SecUpgradeController.smali
-index f3c702e..77c8af7 100644
+index 4c42f7b..5f0af55 100644
 --- a/smali/com/android/providers/settings/SecUpgradeController.smali
 +++ b/smali/com/android/providers/settings/SecUpgradeController.smali
-@@ -4574,7 +4574,7 @@
+@@ -4515,7 +4515,7 @@
  
      move-result p0
  
@@ -21,17 +24,17 @@ index f3c702e..77c8af7 100644
  
      if-eqz p0, :cond_b
  
-@@ -4697,6 +4697,14 @@
+@@ -4638,6 +4638,14 @@
  
-     invoke-virtual/range {v3 .. v8}, Lcom/android/providers/settings/SettingsState;->insertSettingLocked(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;)Z
+     invoke-virtual/range {v4 .. v9}, Lcom/android/providers/settings/SettingsState;->insertSettingLocked(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;)Z
  
-+    const-string v8, "android"
++    const-string v9, "android"
 +
-+    const-string v4, "navigationbar_splugin_flags"
++    const-string v5, "navigationbar_splugin_flags"
 +
-+    const-string v5, "4"
++    const-string v6, "4"
 +
-+    invoke-virtual/range {v3 .. v8}, Lcom/android/providers/settings/SettingsState;->insertSettingLocked(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;)Z
++    invoke-virtual/range {v4 .. v9}, Lcom/android/providers/settings/SettingsState;->insertSettingLocked(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;)Z
 +
      invoke-static {}, Lcom/samsung/android/feature/SemFloatingFeature;->getInstance()Lcom/samsung/android/feature/SemFloatingFeature;
  
