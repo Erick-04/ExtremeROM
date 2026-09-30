@@ -3,24 +3,27 @@ From: Salvo Giangreco <giangrecosalvo9@gmail.com>
 Date: Sat, 21 Jun 2025 19:54:44 +0200
 Subject: [PATCH] Bypass ICD verification
 
-Signed-off-by: Ocin4ever <85343782+Ocin4ever@users.noreply.github.com>
----
- .../samsung/android/security/keystore/AttestParameterSpec.smali | 2 ++
- 1 file changed, 2 insertions(+)
+Change Id: 4d2a045ec11e4fbfb5783f8e7d0718ec38b19ba3 Mon Sep 17 00:00:00 2001
+From: Erick-04 <solonsosua@gmail.com>
+Date: Thu, 23 Jul 2026 06:02:13
 
-diff --git a/smali_classes2/com/samsung/android/security/keystore/AttestParameterSpec.smali b/smali_classes2/com/samsung/android/security/keystore/AttestParameterSpec.smali
-index d87e7a91..6ff5bcc7 100644
---- a/smali_classes2/com/samsung/android/security/keystore/AttestParameterSpec.smali
-+++ b/smali_classes2/com/samsung/android/security/keystore/AttestParameterSpec.smali
-@@ -53,6 +53,8 @@
-     :goto_1
-     iput-object p1, p0, Lcom/samsung/android/security/keystore/AttestParameterSpec;->mChallenge:[B
+---
+ .../samsung/android/security/keystore/AttestationUtils.smali    | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/smali_classes2/com/samsung/android/security/keystore/AttestationUtils.smali b/smali_classes2/com/samsung/android/security/keystore/AttestationUtils.smali
+index c024e66..5c3f87a 100644
+--- a/smali_classes2/com/samsung/android/security/keystore/AttestationUtils.smali
++++ b/smali_classes2/com/samsung/android/security/keystore/AttestationUtils.smali
+@@ -913,7 +913,7 @@
  
-+    const/4 p3, 0x1
-+
-     iput-boolean p2, p0, Lcom/samsung/android/security/keystore/AttestParameterSpec;->mVerifiableIntegrity:Z
+     iput-object p2, v0, Lcom/samsung/android/security/keystore/AttestParameterSpec;->mChallenge:[B
  
-     iput-boolean p3, p0, Lcom/samsung/android/security/keystore/AttestParameterSpec;->mSAKUidRequired:Z
+-    const/4 p2, 0x0
++    const/4 p2, 0x1
+ 
+     iput-boolean p2, v0, Lcom/samsung/android/security/keystore/AttestParameterSpec;->mVerifiableIntegrity:Z
+ 
 -- 
 2.49.1
 
