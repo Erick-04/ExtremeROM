@@ -1,17 +1,20 @@
 From d3da4b611f301cc66c29f31fcff67bec239c7ca7 Mon Sep 17 00:00:00 2001
 From: ExtremeXT <75576145+ExtremeXT@users.noreply.github.com>
 Date: Sat, 12 Apr 2025 21:36:49 +0300
-Subject: [PATCH] Enable Outdoor mode support
+Subject: [PATCH 1/5] Enable Outdoor mode support
 
-Signed-off-by: ExtremeXT <75576145+ExtremeXT@users.noreply.github.com>
+Change Id: 4995ba551eeac8bda1ca2622db899aed2a2312ae Mon Sep 17 00:00:00 2001
+From: Erick-04 <solonsosua@gmail.com>
+Date: Thu, 23 Jul 2026 16:36:14
+
 ---
  .../controller/SecOutDoorModePreferenceController.smali   | 8 +-------
  1 file changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/smali_classes4/com/samsung/android/settings/display/controller/SecOutDoorModePreferenceController.smali b/smali_classes4/com/samsung/android/settings/display/controller/SecOutDoorModePreferenceController.smali
-index 1a10f3c..43eaefa 100644
---- a/smali_classes4/com/samsung/android/settings/display/controller/SecOutDoorModePreferenceController.smali
-+++ b/smali_classes4/com/samsung/android/settings/display/controller/SecOutDoorModePreferenceController.smali
+diff --git a/smali_classes5/com/samsung/android/settings/display/controller/SecOutDoorModePreferenceController.smali b/smali_classes5/com/samsung/android/settings/display/controller/SecOutDoorModePreferenceController.smali
+index 426b51a..3336dc7 100644
+--- a/smali_classes5/com/samsung/android/settings/display/controller/SecOutDoorModePreferenceController.smali
++++ b/smali_classes5/com/samsung/android/settings/display/controller/SecOutDoorModePreferenceController.smali
 @@ -61,13 +61,7 @@
  .method public final isAvailable()Z
      .locals 0
