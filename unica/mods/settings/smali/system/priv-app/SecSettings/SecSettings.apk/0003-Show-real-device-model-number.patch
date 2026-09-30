@@ -1,13 +1,20 @@
 From d6eead0f39428e71adec019c32233d28863ff062 Mon Sep 17 00:00:00 2001
 From: Ocin4ever <85343782+Ocin4ever@users.noreply.github.com>
 Date: Fri, 16 May 2025 17:26:55 +0200
-Subject: [PATCH] Show real device model number
+Subject: [PATCH 3/5] Show real device model number
 
-Co-Authored-By: Salvo Giangreco <giangrecosalvo9@gmail.com>
-diff --git a/smali_classes4/com/samsung/android/settings/deviceinfo/aboutphone/ModelNameGetter.smali b/smali_classes4/com/samsung/android/settings/deviceinfo/aboutphone/ModelNameGetter.smali
-index 7d029eb89..23710a100 100644
---- a/smali_classes4/com/samsung/android/settings/deviceinfo/aboutphone/ModelNameGetter.smali
-+++ b/smali_classes4/com/samsung/android/settings/deviceinfo/aboutphone/ModelNameGetter.smali
+Change Id: 1f740b541053209f9aa947fd161029944d734fae Mon Sep 17 00:00:00 2001
+From: Erick-04 <solonsosua@gmail.com>
+Date: Thu, 30 Jul 2026 17:54:31
+
+---
+ .../settings/deviceinfo/aboutphone/ModelNameGetter.smali        | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/smali_classes5/com/samsung/android/settings/deviceinfo/aboutphone/ModelNameGetter.smali b/smali_classes5/com/samsung/android/settings/deviceinfo/aboutphone/ModelNameGetter.smali
+index f449ca4..af46784 100644
+--- a/smali_classes5/com/samsung/android/settings/deviceinfo/aboutphone/ModelNameGetter.smali
++++ b/smali_classes5/com/samsung/android/settings/deviceinfo/aboutphone/ModelNameGetter.smali
 @@ -48,7 +48,7 @@
  
      invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
